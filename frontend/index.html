@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Natural Language to SQL Compiler</title>
+    <meta name="description" content="Professional compiler interface for translating natural language queries into SQL statements with lexical analysis, parsing, and code generation visualization">
+    <meta name="author" content="NL2SQL Project">
+    
+    <meta property="og:title" content="Natural Language to SQL Compiler">
+    <meta property="og:description" content="Translate natural language queries into executable SQL statements with full compiler pipeline visualization">
+    <meta property="og:type" content="website">
+    
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Lucide Icons via CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <div class="min-h-screen">
+        <!-- Header -->
+        <header class="sticky-header">
+            <div class="container header-content">
+                <div class="header-left">
+                    <div class="icon-wrapper animate-fade-in">
+                        <div class="icon-box gradient-primary shadow-glow animate-float">
+                            <i data-lucide="database" class="icon"></i>
+                        </div>
+                        <div class="header-text">
+                            <h1 class="header-title">Natural Language to SQL Compiler</h1>
+                            <p class="header-subtitle">Translate natural language queries into executable SQL statements</p>
+                        </div>
+                    </div>
+                    <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+                        <i data-lucide="sun" class="sun-icon"></i>
+                        <i data-lucide="moon" class="moon-icon"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="hero-section animate-fade-in">
+            <div class="container">
+                <div class="hero-content">
+                    <div class="hero-badge">
+                        <img src = "Assets/compiler_icon.png" class="hero-badge-icon" draggable="false"></img>
+                        <span class="hero-badge-text">Compiler Design Project</span>
+                    </div>
+                    <h2 class="hero-title">
+                        Transform Natural Language into 
+                        <span class="hero-highlight">Precise SQL Queries</span>
+                    </h2>
+                    <p class="hero-description">
+                        Experience the power of natural language processing with our advanced compiler
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Content -->
+        <main class="container main-content">
+            <!-- Query Input Card -->
+            <div class="card hover-lift animate-slide-in">
+                <div class="card-header">
+                    <h3 class="card-title">Natural Language Query Input</h3>
+                    <p class="card-description">Enter your query in plain English and we'll translate it to SQL</p>
+                </div>
+                <div class="card-content">
+                    <div class="textarea-wrapper">
+                        <textarea 
+                            id="query-input"
+                            class="textarea"
+                            placeholder="Enter your natural language query here..."
+                            rows="6"
+                        ></textarea>
+                        <div class="input-glow"></div>
+                    </div>
+                    <div class="input-footer">
+                        <p class="char-count" id="char-count">0 characters</p>
+                        <button id="compile-btn" class="btn-primary">
+                            <i data-lucide="play" class="btn-icon"></i>
+                            <span class="btn-text">Compile Query</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Output Section -->
+            <div class="output-section animate-fade-in">
+                <!-- Error Card (hidden by default) -->
+                <div id="error-card" class="card error-card" style="display: none;">
+                    <div class="card-header">
+                        <h3 class="card-title error-title">
+                            <i data-lucide="alert-circle" class="error-icon"></i>
+                            Error
+                        </h3>
+                    </div>
+                    <div class="card-content">
+                        <pre class="error-text" id="error-text"></pre>
+                    </div>
+                </div>
+
+                <!-- Output Grid -->
+                <div class="output-grid">
+                    <!-- Tokens Card -->
+                    <div class="card output-card hover-lift">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <div class="icon-badge gradient-accent">
+                                    <i data-lucide="code-2" class="card-icon"></i>
+                                </div>
+                                Lexical Tokens
+                            </h3>
+                        </div>
+                        <div class="card-content">
+                            <div id="tokens-output" class="tokens-container">
+                                <p class="empty-state">No output yet</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Parse Tree Card -->
+                    <div class="card output-card hover-lift">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <div class="icon-badge gradient-primary">
+                                    <i data-lucide="git-branch" class="card-icon"></i>
+                                </div>
+                                Parse Tree
+                            </h3>
+                        </div>
+                        <div class="card-content">
+                            <div id="tree-output">
+                                <p class="empty-state">No output yet</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SQL Card -->
+                    <div class="card output-card sql-card hover-lift">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <div class="icon-badge gradient-success">
+                                    <i data-lucide="database" class="card-icon"></i>
+                                </div>
+                                Generated SQL
+                            </h3>
+                        </div>
+                        <div class="card-content">
+                            <div id="sql-output">
+                                <p class="empty-state">No output yet</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Result Card -->
+                    <div class="card output-card hover-lift">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <div class="icon-badge gradient-primary">
+                                    <i data-lucide="check-circle" class="card-icon"></i>
+                                </div>
+                                Execution Result
+                            </h3>
+                        </div>
+                        <div class="card-content">
+                            <div id="result-output">
+                                <p class="empty-state">No output yet</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container footer-content">
+                <p class="footer-title">Natural Language to SQL Compiler • Academic Project</p>
+                <p class="footer-subtitle">Developed by Team CodeTranslators</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
